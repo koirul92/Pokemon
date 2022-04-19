@@ -45,7 +45,7 @@ class LoginFragment : Fragment() {
                         Snackbar.make(it,"Username atau Password anda salah", Snackbar.LENGTH_LONG).show()
                     }else{
                         val editor = sharedPreferences.edit()
-                        editor.putString("email",username)
+                        editor.putString("username",username)
                         editor.apply()
                         val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
                         findNavController().navigate(direct)
