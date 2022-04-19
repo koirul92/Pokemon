@@ -14,7 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="#2196F3"
+        app:cardBackgroundColor="@color/pokemom"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,6 @@
             android:layout_width="196dp"
             android:layout_height="wrap_content">
             <ImageView
-                android:src="@drawable/ic_launcher_background"
                 android:id="@+id/ivPokemon"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
