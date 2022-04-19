@@ -6,12 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentListBinding
+import com.example.pokemon.model.PokeApiResponse
+import com.example.pokemon.model.PokeResult
+import com.example.pokemon.service.PokeApiClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
@@ -39,19 +46,19 @@ class ListFragment : Fragment() {
     }
     private fun getAllPokemon(){
         /*binding.rvPokemon.layoutManager = LinearLayoutManager(requireContext())*/
-        binding.rvPokemon.adapter = ListAdapter{
-            /*val intent = Intent(this, PokeInfoActivity::class.java)
-            intent.putExtra("id", it)
-            startActivity(intent)*/
-            /*val id = it
-            val direction = ListFragmentDirections.actionListFragment2ToInfoFragment(id)
-            findNavController().navigate(direction)*/
-        }
+
 
         viewModel.getPokemonList()
 
         viewModel.pokemonList.observe(viewLifecycleOwner, Observer { list ->
             (binding.rvPokemon.adapter as ListAdapter).setData(list)
+
         })
+        binding.rvPokemon.adapter = ListAdapter{
+            val id = it
+            val direction = ListFragmentDirections.actionListFragmentToInfoFragment(id)
+            findNavController().navigate(direction)
+    }
+
     }
 }

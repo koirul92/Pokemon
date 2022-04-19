@@ -36,7 +36,7 @@ class ListAdapter(val pokemonClick:(Int)->Unit):RecyclerView.Adapter<ListAdapter
         val imageUrl = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/$formattedNumber.png"
         Glide.with(holder.binding.root).load(imageUrl).into(holder.binding.ivPokemon)
         with(holder.binding){
-            pokemonText.text="#${position + 1} - ${pokemon.name}"
+            pokemonText.text="#${position+1} - ${pokemon.name}"
             item.setOnClickListener { pokemonClick(position+1) }
         }
     }
