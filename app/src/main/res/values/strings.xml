@@ -3,4 +3,23 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
+    <string name="welcome_user">Welcome User</string>
+    <string name="logout"><u>Logout</u></string>
+    <string name="keterangan">Keterangan</string>
+    <string name="dana_goals">Dana Goals :</string>
+    <string name="MonthlyIncome">Tabung per Bulan :</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="konfirmasi_password">Konfirmasi Password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="register">Register</string>
+    <string name="tambah_goals">Tambah Goals</string>
+    <string name="dana_goal">Dana yang dibutuhkan</string>
+    <string name="ingin_dicapai_berapa_bulan">ingin dicapai berapa bulan?</string>
+    <string name="save">Save</string>
+    <string name="edit_goals">Edit Goals</string>
+    <string name="logo">Logo</string>
+    <string name="tabung">Jumlah yang sudah ditabung</string>
 </resources>

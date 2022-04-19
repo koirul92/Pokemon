@@ -6,6 +6,9 @@
         <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/activity_main.xml" value="0.15555555555555556" />
         <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/fragment_info.xml" value="0.16018518518518518" />
         <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/fragment_list.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/fragment_login.xml" value="0.22" />
+        <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/fragment_register.xml" value="0.209375" />
+        <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/fragment_splash.xml" value="0.209375" />
         <entry key="..\:/Users/Bax/AndroidStudioProjects/Pokemon/app/src/main/res/layout/pokemon_item.xml" value="0.20520833333333333" />
       </map>
     </option>
