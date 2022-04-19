@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.pokemon.R
@@ -54,8 +55,11 @@ class InfoFragment : Fragment() {
                 nameTextView.text = pokemon.name
                 heightText.text = "Tinggi: ${pokemon.height/10.0}m"
                 weightText.text = "Berat: ${pokemon.weight/10.0}kg"
-
                 Glide.with(binding.root).load(imageUrl).into(imageView)
+                btnBack.setOnClickListener {
+                    val direct = InfoFragmentDirections.actionInfoFragmentToListFragment()
+                    findNavController().navigate(direct)
+                }
             }
         })
     }
