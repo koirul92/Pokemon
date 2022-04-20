@@ -9,7 +9,8 @@ data class Pokemon (
     @Expose @SerializedName("weight") val weight: Int,
     @Expose @SerializedName("height") val height: Int,
     @Expose @SerializedName("sprites") val sprites: Sprites,
-    @Expose @SerializedName("stats") val stats:Stats
+    @Expose @SerializedName("stats") val stats:List<Stats>,
+    @Expose @SerializedName("types") val types: List<Type>,
 )
 
 data class Sprites (
@@ -26,4 +27,14 @@ data class Stats(
 data class Stat(
     @Expose @SerializedName("name") val name: String,
     @Expose @SerializedName("url") val url: String
+)
+
+data class Type(
+    @Expose @SerializedName("slot") val slot: Int,
+    @Expose @SerializedName("type") val type: TypeX
+)
+
+data class TypeX(
+    @Expose @SerializedName("name") val name: String,
+    @Expose@SerializedName("url") val url: String
 )

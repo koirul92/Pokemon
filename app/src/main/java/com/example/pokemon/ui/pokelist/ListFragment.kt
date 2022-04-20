@@ -51,7 +51,7 @@ class ListFragment : Fragment() {
 
         getAllPokemon()
 
-        binding.tvWelcome.text = "Welcome ${sharedPreference?.getString("username",null)}"
+        binding.tvWelcome.text = "Hello Tamer ${sharedPreference?.getString("username",null)}"
 
         binding.tvLogout.setOnClickListener {
             val editor: SharedPreferences.Editor = sharedPreference.edit()

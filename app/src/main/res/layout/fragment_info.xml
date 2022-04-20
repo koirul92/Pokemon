@@ -5,8 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.pokeinfo.InfoFragment">
+    tools:context=".ui.pokeinfo.InfoFragment"
+    android:background="@drawable/bg_detail">
 
+
+
+    <ImageView
+        android:id="@+id/bg_square"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/bg_white"
+        android:layout_width="384dp"
+        android:layout_height="512dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="192dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
@@ -15,55 +39,162 @@
         android:textAllCaps="true"
         android:textColor="@android:color/black"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
         tools:text="Pokemon Name" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:background="@android:color/holo_blue_dark"
-        android:scaleType="fitXY"
+    <LinearLayout
+        android:id="@+id/linearType"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvType1"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_type"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="Type" />
+
+        <TextView
+            android:id="@+id/tvType2"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_type"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:text="Fire" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivHeight"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearType"
+        app:layout_constraintEnd_toStartOf="@id/ivWeight"
+        android:src="@drawable/ic_height"
+        android:layout_width="64dp"
+        android:layout_height="64dp"/>
+
+    <ImageView
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@id/ivHeight"
+        app:layout_constraintTop_toBottomOf="@id/linearType"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/ivWeight"
+        android:src="@drawable/ic_weight"
+        android:layout_width="64dp"
+        android:layout_height="64dp"/>
 
     <TextView
         android:id="@+id/heightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="32dp"
         android:textColor="@android:color/black"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:text="Altura: 1m" />
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/ivHeight"
+        app:layout_constraintTop_toBottomOf="@id/ivHeight"
+        app:layout_constraintEnd_toEndOf="@id/ivHeight"
+        tools:text="1m" />
 
     <TextView
         android:id="@+id/weightText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:textColor="@android:color/black"
         android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/ivWeight"
+        app:layout_constraintTop_toBottomOf="@id/ivWeight"
+        app:layout_constraintEnd_toEndOf="@id/ivWeight"
+        tools:text="1kg" />
+    <TextView
+        android:id="@+id/tvHp"
+        app:layout_constraintTop_toBottomOf="@id/heightText"
+        app:layout_constraintStart_toStartOf="@id/pbHp"
+        android:text="@string/hp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ProgressBar
+        android:layout_marginVertical="8dp"
+        android:id="@+id/pbHp"
+        android:progressDrawable="@drawable/custom_progress"
+        app:layout_constraintTop_toBottomOf="@id/tvHp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heightText"
-        tools:text="Peso: 1kg" />
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:scaleY="2"/>
+    <TextView
+        android:id="@+id/tvAtt"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/pbHp"
+        app:layout_constraintStart_toStartOf="@id/pbAtt"
+        android:text="@string/att"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ProgressBar
+        android:id="@+id/pbAtt"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvAtt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:progressDrawable="@drawable/custom_progress_att"
+        android:scaleY="2"/>
+    <TextView
+        android:id="@+id/tvDef"
+        app:layout_constraintTop_toBottomOf="@id/pbAtt"
+        app:layout_constraintStart_toStartOf="@id/pbDef"
+        android:layout_marginTop="8dp"
+        android:text="@string/def"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ProgressBar
+        android:id="@+id/pbDef"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDef"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="320dp"
+        android:progressDrawable="@drawable/custom_progress_def"
+        android:layout_height="wrap_content"
+        android:scaleY="2"/>
+
     <Button
         android:id="@+id/btn_back"
-        app:layout_constraintTop_toBottomOf="@id/weightText"
+        app:layout_constraintTop_toBottomOf="@id/bg_square"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/back"
+        android:textColor="@color/blue"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/pokemom"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

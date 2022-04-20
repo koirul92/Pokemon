@@ -24,7 +24,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item"
             android:layout_width="196dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_detail">
             <ImageView
                 android:id="@+id/ivPokemon"
                 android:layout_width="150dp"
