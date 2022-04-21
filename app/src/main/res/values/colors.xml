@@ -11,4 +11,7 @@
     <color name="none">#00FFFFFF</color>
     <color name="blue">#2652FC</color>
     <color name="orange">#D38136</color>
+    <color name="hp">#26FC31</color>
+    <color name="att">#DA5314</color>
+    <color name="def">#3970CF</color>
 </resources>

@@ -101,48 +101,61 @@ class ListFragment : Fragment() {
                         data.password
                     )
                     viewModel.getUser(user)
-                    binding.tvWelcome.setOnClickListener {
-                        val dialogBinding = CustomDialogBinding.inflate(LayoutInflater.from(requireContext()))
-                        val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                        dialogBuilder.setView(dialogBinding.root)
-                        val dialog = dialogBuilder.create()
-                        dialog.setCancelable(false)
-                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                        dialogBinding.etUsername.setText("${user.name}")
-                        dialogBinding.etEmail.setText("${user.email}")
-                        dialogBinding.etPassowrd.setText("${user.password}")
-                        dialogBinding.btnUpdate.setOnClickListener {
-                            val id = user.id
-                            val usernameU = dialogBinding.etUsername.text.toString()
-                            val emailU = dialogBinding.etEmail.text.toString()
-                            val passwordU = dialogBinding.etPassowrd.text.toString()
+                    viewModel.userLoggedin.observe(viewLifecycleOwner, Observer {
+                        binding.tvWelcome.setOnClickListener {
+                            val dialogBinding = CustomDialogBinding.inflate(LayoutInflater.from(requireContext()))
+                            val dialogBuilder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                            dialogBuilder.setView(dialogBinding.root)
+                            val dialog = dialogBuilder.create()
+                            dialog.setCancelable(false)
+                            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            viewModel.userLoggedin.observe(viewLifecycleOwner){
+                                dialogBinding.etUsername.setText("${it.name}")
+                            }
+                            viewModel.userLoggedin.observe(viewLifecycleOwner){
+                                dialogBinding.etEmail.setText("${it.email}")
+                            }
+                            viewModel.userLoggedin.observe(viewLifecycleOwner){
+                                dialogBinding.etPassowrd.setText("${it.password}")
+                            }
 
-                            val data2 = User(id,usernameU,emailU,passwordU)
-                            lifecycleScope.launch(Dispatchers.IO){
-                                val result = repo.updateItem(data2)
-                                runBlocking(Dispatchers.Main){
-                                    if (result != 0){
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Data ${data2.name} Berhasil Di Update!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        viewModel.getUser(data2)
-                                        dialog.dismiss()
-                                    } else {
-                                        Toast.makeText(
-                                            requireContext(),
-                                            "Data ${data2.name} Gagal Di update!",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        viewModel.getUser(data2)
-                                        dialog.dismiss()
+                            dialogBinding.btnUpdate.setOnClickListener {
+                                lifecycleScope.launch(Dispatchers.IO){
+                                    val id = user.id
+                                    val usernameU = dialogBinding.etUsername.text.toString()
+                                    val emailU = dialogBinding.etEmail.text.toString()
+                                    val passwordU = dialogBinding.etPassowrd.text.toString()
+                                    val data2 = User(id,usernameU,emailU,passwordU)
+
+                                    val result = repo.updateItem(data2)
+                                    runBlocking(Dispatchers.Main){
+                                        if (result != 0){
+                                            val editor = sharedPreference.edit()
+                                            editor.putString("username",usernameU)
+                                            editor.putString("password",passwordU)
+                                            editor.apply()
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Data ${data2.name} Berhasil Di Update!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            viewModel.getUser(data2)
+                                            dialog.dismiss()
+                                        } else {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Data ${data2.name} Gagal Di update!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            viewModel.getUser(data2)
+                                            dialog.dismiss()
+                                        }
                                     }
                                 }
                             }
+                            dialog.show()
                         }
-                        dialog.show()
-                    }
+                    })
                 }
             }
         }

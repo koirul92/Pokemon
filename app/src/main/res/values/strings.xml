@@ -25,4 +25,5 @@
     <string name="hp">HP :</string>
     <string name="def">DEF :</string>
     <string name="att">ATT :</string>
+    <string name="update">Update</string>
 </resources>

@@ -25,7 +25,7 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sharedPreference = context?.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
-        val sharedPreferences = sharedPreference?.getString("username",null)
+        val sharedPreferences = sharedPreference?.getString("username","")
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (sharedPreferences == ""){
