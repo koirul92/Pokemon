@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.pokemon.model.PokeApiResponse
 import com.example.pokemon.model.PokeResult
 import com.example.pokemon.service.PokeApiClient
+import com.example.pokemon.ui.room.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,4 +26,9 @@ class ListViewModel():ViewModel() {
             }
         })
     }
+    var userLoggedin : MutableLiveData<User> = MutableLiveData()
+    fun getUser(user: User){
+        userLoggedin.postValue(user)
+    }
+
 }

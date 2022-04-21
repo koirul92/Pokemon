@@ -58,8 +58,7 @@ class InfoFragment : Fragment() {
                 weightText.text = "${pokemon.weight/10.0}Kg"
                 Glide.with(binding.root).load(imageUrl).into(imageView)
                 btnBack.setOnClickListener {
-                    val direct = InfoFragmentDirections.actionInfoFragmentToListFragment()
-                    findNavController().navigate(direct)
+                    findNavController().popBackStack()
                 }
                 tvType1.text = pokemon.types[0].type.name.replaceFirstChar {
                     if (it.isLowerCase()) it.titlecase(
