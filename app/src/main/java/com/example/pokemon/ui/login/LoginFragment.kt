@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
         dataStore = DataStoreManager(requireContext())
         viewModel = ViewModelProvider(requireActivity(),ViewModelFactory(dataStore))[ListViewModel::class.java]
         repo = UserRepository(requireContext())
-        userLogin()
+        //userLogin()
         binding.btnLogin.setOnClickListener {
             val username = binding.etUser.text.toString()
             val password = binding.etPassword.text.toString()
@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun userLogin(){
+    /*fun userLogin(){
         viewModel.apply {
             getDataUser().observe(viewLifecycleOwner){
                 if (it.id != DataStoreManager.DEFAULT_ID){
@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
 
     override fun onDestroyView() {

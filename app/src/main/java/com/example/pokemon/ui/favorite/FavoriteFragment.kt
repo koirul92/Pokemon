@@ -15,7 +15,7 @@ import com.example.pokemon.ui.room.repository.FavoriteRepository
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
-    private val binding get() = _binding
+    private val binding get() = _binding!!
 
     private val favoriteViewModel by viewModels<FavoriteViewModel> {
         FavoriteViewModelFactory(
@@ -29,7 +29,7 @@ class FavoriteFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentFavoriteBinding.inflate(inflater,container,false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,6 +38,9 @@ class FavoriteFragment : Fragment() {
         favoriteViewModel.allFavorites.observe(viewLifecycleOwner){
             //show adapter
             showFavoritePokemon(it)
+        }
+        binding.ivBack.setOnClickListener {
+            findNavController().navigate(R.id.action_favoriteFragment_to_listFragment)
         }
 
         favoriteViewModel.getAllFavorites()
