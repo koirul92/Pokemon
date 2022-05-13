@@ -1,16 +1,20 @@
 package com.example.pokemon.ui.pokelist
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +23,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.pokemon.MainActivity
 import com.example.pokemon.R
 import com.example.pokemon.databinding.CustomDialogBinding
@@ -30,6 +35,7 @@ import com.example.pokemon.service.PokeApiClient
 import com.example.pokemon.ui.room.User
 import com.example.pokemon.ui.room.UserDatabase
 import com.example.pokemon.ui.room.repository.UserRepository
+import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -37,6 +43,7 @@ import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class ListFragment : Fragment() {
     private var _binding: FragmentListBinding? = null
@@ -71,6 +78,9 @@ class ListFragment : Fragment() {
         viewModel.getDataUser().observe(viewLifecycleOwner) {
             binding.tvWelcome.text = "Welcome Tamer ${it.name}"
         }
+        binding.logo.setOnClickListener {
+            openImagePicker()
+        }
         binding.tvLogout.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 dataStore.deleteUserFromPref()
@@ -78,6 +88,53 @@ class ListFragment : Fragment() {
             val direct = ListFragmentDirections.actionListFragmentToSplashFragment()
             findNavController().navigate(direct)
         }
+    }
+
+    private val startForProfileImageResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    //Image Uri will not be null for RESULT_OK
+                    val fileUri = data?.data
+                    fileUri?.let { loadImage(it) }
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(requireContext(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+
+                }
+            }
+        }
+    private fun loadImage(uri: Uri) {
+        binding.apply {
+            Glide.with(binding.root)
+                .load(uri)
+                .circleCrop()
+                .into(logo)
+
+        }
+    }
+
+    private fun openImagePicker() {
+        ImagePicker.with(this)
+            .crop()
+            .saveDir(
+                File(
+                    requireContext().externalCacheDir,
+                    "ImagePicker"
+                )
+            ) //Crop image(Optional), Check Customization for more option
+            .compress(1024)            //Final image size will be less than 1 MB(Optional)
+            .maxResultSize(
+                1080,
+                1080
+            )    //Final image resolution will be less than 1080 x 1080(Optional)
+            .createIntent { intent ->
+                startForProfileImageResult.launch(intent)
+            }
     }
 
     private fun getAllPokemon() {
@@ -153,4 +210,6 @@ class ListFragment : Fragment() {
             }
         }
     }
+
+
 }

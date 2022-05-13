@@ -66,7 +66,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun userLogin(){
+    fun userLogin(){
         viewModel.apply {
             getDataUser().observe(viewLifecycleOwner){
                 if (it.id != DataStoreManager.DEFAULT_ID){

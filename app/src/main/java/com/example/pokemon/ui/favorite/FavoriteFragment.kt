@@ -37,14 +37,14 @@ class FavoriteFragment : Fragment() {
 
         favoriteViewModel.allFavorites.observe(viewLifecycleOwner){
             //show adapter
-            showFavoriteMovies(it)
+            showFavoritePokemon(it)
         }
 
         favoriteViewModel.getAllFavorites()
 
     }
 
-    private fun showFavoriteMovies(list: List<Favorite?>?) {
+    private fun showFavoritePokemon(list: List<Favorite?>?) {
         val adapter= FavoriteAdapter {
             val action = FavoriteFragmentDirections
                 .actionFavoriteFragmentToInfoFragment(it.id!!)
