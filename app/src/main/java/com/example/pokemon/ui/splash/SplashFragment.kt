@@ -31,9 +31,6 @@ class SplashFragment : Fragment() {
             if (sharedPreferences == ""){
                 val direct = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
                 findNavController().navigate(direct)
-            }else{
-                val direct = SplashFragmentDirections.actionSplashFragmentToListFragment()
-                findNavController().navigate(direct)
             }
         },5000)
     }

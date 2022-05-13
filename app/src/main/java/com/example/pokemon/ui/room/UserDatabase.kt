@@ -6,9 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, Favorite::class], version = 1)
 abstract class UserDatabase(): RoomDatabase() {
     abstract fun userDao() : UserDao
+    abstract fun favoriteDao() : FavoriteDao
 
     companion object{
         private var INSTANCE: UserDatabase? = null
@@ -18,7 +19,7 @@ abstract class UserDatabase(): RoomDatabase() {
                 synchronized(UserDatabase::class){
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
-                        UserDatabase::class.java,"Dana.db"
+                        UserDatabase::class.java,"Data.db"
                     ).build()
                 }
             }

@@ -17,6 +17,9 @@
             app:destination="@id/splashFragment"
             app:popUpTo="@id/listFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="user"
+            app:argType="com.example.pokemon.ui.room.User" />
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
