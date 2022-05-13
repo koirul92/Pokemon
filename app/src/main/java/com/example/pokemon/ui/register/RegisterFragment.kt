@@ -40,7 +40,7 @@ class RegisterFragment : Fragment() {
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            val regist = User(null,name,email,password)
+            val regist = User(null,name,email,password,null)
             when {
                 name.isNullOrEmpty() -> {
                     binding.materialName.error = "Kolom nama harus diisi"

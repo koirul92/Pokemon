@@ -12,4 +12,6 @@ data class User(
     @PrimaryKey(autoGenerate = true) var id: Int?,
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "email") var email: String,
-    @ColumnInfo(name = "password") var password: String,): Parcelable
+    @ColumnInfo(name = "password") var password: String,
+    @ColumnInfo(name = "image") var image: String?,
+): Parcelable

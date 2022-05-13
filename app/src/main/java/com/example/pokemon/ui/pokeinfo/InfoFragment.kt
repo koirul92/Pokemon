@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -16,16 +18,21 @@ import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentInfoBinding
 import com.example.pokemon.databinding.FragmentListBinding
 import com.example.pokemon.ui.pokelist.ListViewModel
+import com.example.pokemon.ui.room.Favorite
+import com.example.pokemon.ui.room.repository.FavoriteRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 
 class InfoFragment : Fragment() {
     private var _binding: FragmentInfoBinding? = null
     private val binding get() = _binding!!
-    lateinit var viewModel: InfoViewModel
     private val args:InfoFragmentArgs by navArgs()
 
-
+    private val infoViewModel by viewModels<InfoViewModel> {
+        InfoViewModelFactory(FavoriteRepository(requireContext()))
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,15 +47,14 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(InfoViewModel::class.java)
         getInfoPokemon()
     }
 
     private fun getInfoPokemon() {
 
         val id = args.id
-        viewModel.getPokemonInfo(id)
-        viewModel.pokemonInfo.observe(viewLifecycleOwner, Observer { pokemon->
+        infoViewModel.getPokemonInfo(id)
+        infoViewModel.pokemonInfo.observe(viewLifecycleOwner, Observer { pokemon->
             val number = pokemon.id
             val formattedNumber = number.toString().padStart(3, '0')
             val imageUrl = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/$formattedNumber.png"
@@ -92,6 +98,46 @@ class InfoFragment : Fragment() {
 
 
             }
+            // Favorite
+            binding.ivFavorite.setOnClickListener {_ ->
+                lifecycleScope.launch(Dispatchers.IO) {
+                    val isFavorite = infoViewModel.getFavorite(id)
+
+                    activity?.runOnUiThread {
+                        if (isFavorite == null){
+                            val addFavorite = Favorite(
+                                id = pokemon.id,
+                                name = pokemon.name,
+                                image = imageUrl
+                            )
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                infoViewModel.addFavorite(addFavorite)
+                            }
+                            infoViewModel.changeFavorite(true)
+                        }else{
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                infoViewModel.deleteFavorite(isFavorite)
+                            }
+                            infoViewModel.changeFavorite(false)
+                        }
+                    }
+                }
+            }
         })
+        infoViewModel.isFavorite.observe(viewLifecycleOwner){
+            if (it){
+                binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            }else{
+                binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+        }
+        lifecycleScope.launch(Dispatchers.IO) {
+            val fav = infoViewModel.getFavorite(id)
+            if (fav == null){
+                infoViewModel.changeFavorite(false)
+            }else{
+                infoViewModel.changeFavorite(true)
+            }
+        }
     }
 }

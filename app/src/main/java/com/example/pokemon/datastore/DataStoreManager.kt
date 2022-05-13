@@ -19,10 +19,12 @@ class DataStoreManager(private val context: Context) {
         val USERNAME_KEY = stringPreferencesKey("USERNAME_KEY")
         private val EMAIL_KEY = stringPreferencesKey("EMAIL_KEY")
         val PASSWORD_KEY = stringPreferencesKey("PASSWORD_KEY")
+        val IMAGE_KEY = stringPreferencesKey("IMAGE_KEY")
         const val DEFAULT_ID = -1
         const val DEFAULT_USERNAME = "DEF_USERNAME"
         const val DEFAULT_EMAIL = "DEF_EMAIL"
         const val DEFAULT_PASSWORD = "DEF_PASSWORD"
+        const val DEFAULT_IMAGE = "DEF_IMAGE"
         val Context.dataStore by preferencesDataStore(DataStoreManager.USERPREF)
     }
 
@@ -40,7 +42,8 @@ class DataStoreManager(private val context: Context) {
                 preferences[ID_USER_KEY] ?: DEFAULT_ID,
                 preferences[USERNAME_KEY] ?: DEFAULT_USERNAME,
                 preferences[EMAIL_KEY] ?: DEFAULT_EMAIL,
-                preferences[PASSWORD_KEY] ?: DEFAULT_PASSWORD
+                preferences[PASSWORD_KEY] ?: DEFAULT_PASSWORD,
+                preferences[IMAGE_KEY] ?: DEFAULT_IMAGE
             )
         }
     }

@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,6 +65,9 @@ class ListFragment : Fragment() {
         getUser()
         repo = UserRepository(requireContext())
         getAllPokemon()
+        binding.btnFav.setOnClickListener {
+            it.findNavController().navigate(R.id.action_listFragment_to_favoriteFragment)
+        }
         viewModel.getDataUser().observe(viewLifecycleOwner) {
             binding.tvWelcome.text = "Welcome Tamer ${it.name}"
         }
@@ -118,7 +122,7 @@ class ListFragment : Fragment() {
                                 val usernameU = dialogBinding.etUsername.text.toString()
                                 val emailU = dialogBinding.etEmail.text.toString()
                                 val passwordU = dialogBinding.etPassowrd.text.toString()
-                                val data2 = User(id, usernameU, emailU, passwordU)
+                                val data2 = User(id, usernameU, emailU, passwordU,"")
 
                                 lifecycleScope.launch(Dispatchers.IO) {
                                     val result = repo.updateItem(data2)
