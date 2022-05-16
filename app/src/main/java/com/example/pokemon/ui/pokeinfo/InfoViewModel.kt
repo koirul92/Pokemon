@@ -37,7 +37,6 @@ class InfoViewModel(private val repository: FavoriteRepository):ViewModel() {
     fun changeFavorite(state: Boolean){
         _isFavorite.postValue(state)
     }
-
     fun getFavorite(id:Int) = repository.getFavoriteById(id)
     fun addFavorite(favorite: Favorite) = repository.insertFavorite(favorite)
     fun deleteFavorite(favorite: Favorite) = repository.deleteFavorite(favorite)
