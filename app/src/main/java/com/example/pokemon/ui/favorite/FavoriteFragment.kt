@@ -9,19 +9,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentFavoriteBinding
-import com.example.pokemon.ui.room.Favorite
-import com.example.pokemon.ui.room.repository.FavoriteRepository
+import com.example.pokemon.local.Favorite
+import com.example.pokemon.ui.viewmodel.FavoriteViewModel
+import com.example.pokemon.ui.viewmodel.InfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
 
-    private val favoriteViewModel by viewModels<FavoriteViewModel> {
-        FavoriteViewModelFactory(
-            FavoriteRepository(requireContext())
-        )
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

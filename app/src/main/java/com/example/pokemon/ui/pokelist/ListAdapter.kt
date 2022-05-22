@@ -9,7 +9,7 @@ import com.example.pokemon.R
 import com.example.pokemon.databinding.PokemonItemBinding
 import com.example.pokemon.model.PokeResult
 
-class ListAdapter(val pokemonClick:(Int)->Unit):RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
+class ListAdapter(private val pokemonClick:(Int)->Unit):RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
     class MyViewHolder(val binding: PokemonItemBinding): RecyclerView.ViewHolder(binding.root)
 
     var pokemonList: List<PokeResult> = emptyList<PokeResult>()

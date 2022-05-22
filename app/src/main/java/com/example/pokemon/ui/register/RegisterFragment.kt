@@ -6,19 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentRegisterBinding
-import com.example.pokemon.ui.room.User
-import com.example.pokemon.ui.room.repository.UserRepository
+import com.example.pokemon.local.User
+import com.example.pokemon.ui.viewmodel.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
-    lateinit var repo:UserRepository
+    private val viewModel: AuthViewModel by viewModels()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -31,8 +35,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        repo = UserRepository(requireContext())
 
         binding.btnRegister.setOnClickListener {
             val name = binding.etName.text.toString()
@@ -58,16 +60,7 @@ class RegisterFragment : Fragment() {
                     binding.materialConfirmPassword.error = "Password dan konfirmasi password tidak sama"
                     binding.etConfirmPassword.setText("")
                 }else-> {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val result = repo.insertUser(regist)
-                    activity?.runOnUiThread {
-                        if (result != 0.toLong()){
-                            Toast.makeText(context, "Pendaftaran berhasil", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(context, "Pendaftaran gagal", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
+                viewModel.register(regist)
                 val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
                 findNavController().navigate(direct)
             }

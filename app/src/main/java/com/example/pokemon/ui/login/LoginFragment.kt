@@ -1,31 +1,28 @@
 package com.example.pokemon.ui.login
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.pokemon.MainActivity
-import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentLoginBinding
 import com.example.pokemon.datastore.DataStoreManager
-import com.example.pokemon.ui.pokelist.ListViewModel
-import com.example.pokemon.ui.pokelist.ViewModelFactory
-import com.example.pokemon.ui.room.repository.UserRepository
+import com.example.pokemon.datastore.PreferenceModel
+import com.example.pokemon.ui.viewmodel.AuthViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding?=null
     private val binding get() = _binding!!
-    lateinit var repo:UserRepository
-    private lateinit var viewModel: ListViewModel
-    lateinit var dataStore:DataStoreManager
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,28 +34,25 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dataStore = DataStoreManager(requireContext())
-        viewModel = ViewModelProvider(requireActivity(),ViewModelFactory(dataStore))[ListViewModel::class.java]
-        repo = UserRepository(requireContext())
         //userLogin()
         binding.btnLogin.setOnClickListener {
             val username = binding.etUser.text.toString()
             val password = binding.etPassword.text.toString()
 
-            lifecycleScope.launch(Dispatchers.IO){
-                val Login = repo.login(username,password)
-                activity?.runOnUiThread {
-                    if (Login ==null){
-                        Snackbar.make(it,"Username atau Password anda salah", Snackbar.LENGTH_LONG).show()
-                    }else{
-                        val direct = LoginFragmentDirections.actionLoginFragmentToListFragment(Login)
-                        findNavController().navigate(direct)
-                    }
+
+            when {
+                username.isNullOrEmpty() -> {
+                    binding.materialEmail.error = "Kolom nama harus diisi"
                 }
-                if (Login != null){
-                    viewModel.setDataUser(Login)
-                }
+                password.isNullOrEmpty() -> {
+                    binding.materialPassword.error = "Kolom password harus diisi"
+                }else ->{
+                viewModel.login(username,password)
+                val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
+                findNavController().navigate(direct) }
+
             }
+
         }
         binding.btnRegister.setOnClickListener {
             val direct = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()

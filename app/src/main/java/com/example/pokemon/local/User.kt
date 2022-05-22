@@ -1,4 +1,4 @@
-package com.example.pokemon.ui.room
+package com.example.pokemon.local
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

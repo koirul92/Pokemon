@@ -1,4 +1,4 @@
-package com.example.pokemon.ui.room
+package com.example.pokemon.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

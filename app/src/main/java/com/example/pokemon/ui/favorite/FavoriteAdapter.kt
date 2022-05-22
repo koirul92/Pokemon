@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.pokemon.databinding.PokemonItemBinding
-import com.example.pokemon.ui.room.Favorite
+import com.example.pokemon.local.Favorite
 
 class FavoriteAdapter(private val onClick:(Favorite)->Unit) : ListAdapter<Favorite,FavoriteAdapter.ViewHolder>(FavoriteComparator()) {
     class ViewHolder(private val binding: PokemonItemBinding): RecyclerView.ViewHolder(binding.root) {

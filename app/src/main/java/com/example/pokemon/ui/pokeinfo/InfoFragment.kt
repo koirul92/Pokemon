@@ -8,31 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentInfoBinding
-import com.example.pokemon.databinding.FragmentListBinding
-import com.example.pokemon.ui.pokelist.ListViewModel
-import com.example.pokemon.ui.room.Favorite
-import com.example.pokemon.ui.room.repository.FavoriteRepository
+import com.example.pokemon.local.Favorite
+import com.example.pokemon.ui.viewmodel.InfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 
-
+@AndroidEntryPoint
 class InfoFragment : Fragment() {
     private var _binding: FragmentInfoBinding? = null
     private val binding get() = _binding!!
     private val args:InfoFragmentArgs by navArgs()
-
-    private val infoViewModel by viewModels<InfoViewModel> {
-        InfoViewModelFactory(FavoriteRepository(requireContext()))
-    }
+    private val infoViewModel: InfoViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,26 +49,26 @@ class InfoFragment : Fragment() {
         val id = args.id
         infoViewModel.getPokemonInfo(id)
         infoViewModel.pokemonInfo.observe(viewLifecycleOwner, Observer { pokemon->
-            val number = pokemon.id
+            val number = pokemon.data?.id
             val formattedNumber = number.toString().padStart(3, '0')
             val imageUrl = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/$formattedNumber.png"
             binding.apply {
-                nameTextView.text = pokemon.name
-                heightText.text = "${pokemon.height/10.0}M"
-                weightText.text = "${pokemon.weight/10.0}Kg"
+                nameTextView.text = pokemon.data?.name
+                heightText.text = "${pokemon.data?.height?.div(10.0)}M"
+                weightText.text = "${pokemon.data?.weight?.div(10.0)}Kg"
                 Glide.with(binding.root).load(imageUrl).into(imageView)
                 btnBack.setOnClickListener {
                     findNavController().popBackStack()
                 }
-                tvType1.text = pokemon.types[0].type.name.replaceFirstChar {
+                tvType1.text = pokemon.data!!.types[0].type.name.replaceFirstChar {
                     if (it.isLowerCase()) it.titlecase(
                         Locale.getDefault()
                     ) else it.toString()
                 }
 
-                if (pokemon.types.size > 1) {
+                if (pokemon.data.types.size > 1) {
                     tvType2.visibility = View.VISIBLE
-                    tvType2.text = pokemon.types[1].type.name.replaceFirstChar {
+                    tvType2.text = pokemon.data.types[1].type.name.replaceFirstChar {
                         if (it.isLowerCase()) it.titlecase(
                             Locale.getDefault()
                         ) else it.toString()
@@ -83,13 +77,13 @@ class InfoFragment : Fragment() {
                     tvType2.visibility = View.GONE
                 }
                 pbHp.max=100
-                val currentProgressHp=pokemon.stats[0].baseStat
+                val currentProgressHp=pokemon.data.stats[0].baseStat
                 ObjectAnimator.ofInt(pbHp,"progress",currentProgressHp).setDuration(2000).start()
                 pbAtt.max=100
-                val currentProgressAtt=pokemon.stats[1].baseStat
+                val currentProgressAtt=pokemon.data.stats[1].baseStat
                 ObjectAnimator.ofInt(pbAtt,"progress",currentProgressAtt).setDuration(2000).start()
                 pbDef.max=100
-                val currentProgressDef=pokemon.stats[2].baseStat
+                val currentProgressDef=pokemon.data.stats[2].baseStat
                 ObjectAnimator.ofInt(pbDef,"progress",currentProgressDef).setDuration(2000).start()
 
                 tvHp.text ="HP : ${currentProgressHp}"
@@ -106,8 +100,8 @@ class InfoFragment : Fragment() {
                     activity?.runOnUiThread {
                         if (isFavorite == null){
                             val addFavorite = Favorite(
-                                id = pokemon.id,
-                                name = pokemon.name,
+                                id = pokemon.data?.id,
+                                name = pokemon.data!!.name,
                                 image = imageUrl
                             )
                             lifecycleScope.launch(Dispatchers.IO) {
