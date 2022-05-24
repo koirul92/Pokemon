@@ -40,6 +40,7 @@ class InfoViewModel @Inject constructor(private val repository: DetailRepository
     fun changeFavorite(state: Boolean){
         _isFavorite.postValue(state)
     }
+
     fun getFavorite(id:Int) = repository.getFavoritebyId(id)
     fun addFavorite(favorite: Favorite) = repository.insertFavorite(favorite)
     fun deleteFavorite(favorite: Favorite) = repository.deleteFavorite(favorite)

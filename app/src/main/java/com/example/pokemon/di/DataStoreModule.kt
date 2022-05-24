@@ -13,21 +13,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-private const val USER_PREF = "user_pref"
 @InstallIn(SingletonComponent::class)
 @Module
 object DataStoreModule {
     @Singleton
     @Provides
-    fun providePreferencesDataStore(
-        @ApplicationContext appContext : Context
-    ): DataStore<Preferences> = PreferenceDataStoreFactory.create {
-        appContext.preferencesDataStoreFile(USER_PREF)
-    }
-
-    @Singleton
-    @Provides
     fun provideUserPreference(
-        dataStore: DataStore<Preferences>
-    ) = DataStoreManager(dataStore)
+        @ApplicationContext appContext : Context
+    ) = DataStoreManager(appContext)
 }

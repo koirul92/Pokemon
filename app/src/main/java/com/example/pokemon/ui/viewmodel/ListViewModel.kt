@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokemon.Repository.ListRepository
-import com.example.pokemon.Repository.UserRepository
-import com.example.pokemon.datastore.DataStoreManager
-import com.example.pokemon.datastore.PreferenceModel
+import com.example.pokemon.local.User
 import com.example.pokemon.model.PokeApiResponse
-import com.example.pokemon.model.PokeResult
 import com.example.pokemon.model.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -31,8 +28,8 @@ class ListViewModel @Inject constructor(private val listRepository: ListReposito
         }
     }
 
-    private val _userSession: MutableLiveData<PreferenceModel> = MutableLiveData()
-    val userSession: LiveData<PreferenceModel> get() = _userSession
+    private val _userSession: MutableLiveData<User> = MutableLiveData()
+    val userSession: LiveData<User> get() = _userSession
 
 
     fun getDataUser() {

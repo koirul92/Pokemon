@@ -55,7 +55,7 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getAllPokemon()
+
         binding.btnFav.setOnClickListener {
             it.findNavController().navigate(R.id.action_listFragment_to_favoriteFragment)
         }
@@ -91,24 +91,10 @@ class ListFragment : Fragment() {
             binding.tvWelcome.text = it.name
         }
         binding.tvLogout.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.deleteDataUser()
-            }
+            viewModel.deleteDataUser()
             val direct = ListFragmentDirections.actionListFragmentToSplashFragment()
             findNavController().navigate(direct)
         }
     }
 
-    private fun getAllPokemon() {
-        /*viewModel.getPokemonList()
-        viewModel.pokemonList.observe(viewLifecycleOwner, Observer { list ->
-            (binding.rvPokemon.adapter as ListAdapter).setData(list.data!!.results)
-        })
-        binding.rvPokemon.adapter = ListAdapter {
-            val id = it
-            val direction = ListFragmentDirections.actionListFragmentToInfoFragment(id)
-            findNavController().navigate(direction)
-        }*/
-
-    }
 }

@@ -5,18 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.pokemon.databinding.FragmentLoginBinding
-import com.example.pokemon.datastore.DataStoreManager
-import com.example.pokemon.datastore.PreferenceModel
 import com.example.pokemon.ui.viewmodel.AuthViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -39,7 +33,6 @@ class LoginFragment : Fragment() {
             val username = binding.etUser.text.toString()
             val password = binding.etPassword.text.toString()
 
-
             when {
                 username.isNullOrEmpty() -> {
                     binding.materialEmail.error = "Kolom nama harus diisi"
@@ -47,9 +40,19 @@ class LoginFragment : Fragment() {
                 password.isNullOrEmpty() -> {
                     binding.materialPassword.error = "Kolom password harus diisi"
                 }else ->{
+                viewModel.getUser(username)
                 viewModel.login(username,password)
-                val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
-                findNavController().navigate(direct) }
+                viewModel.userSession.observe(viewLifecycleOwner){user->
+                    if(user == null){
+                        Toast.makeText(requireContext(),"Gagal Login",Toast.LENGTH_SHORT).show()
+                    }else{
+                        viewModel.setDataUser(user)
+                        val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
+                        findNavController().navigate(direct)
+                        }
+                    }
+
+                }
 
             }
 

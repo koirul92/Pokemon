@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pokemon.R
+import com.example.pokemon.datastore.DataStoreManager
 import com.example.pokemon.ui.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,11 +29,16 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Handler(Looper.getMainLooper()).postDelayed({
+            viewModel.getUserFromPref()
             viewModel.apply {
                 userSession.observe(viewLifecycleOwner){
+                    if (it.id != DataStoreManager.DEFAULT_ID){
+                        findNavController().navigate(R.id.action_splashFragment_to_listFragment)
+                    }else{
+                        findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+                    }
                 }
             }
-            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         },1000)
     }
 }
