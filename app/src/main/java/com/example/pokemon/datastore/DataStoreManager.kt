@@ -1,8 +1,6 @@
 package com.example.pokemon.datastore
 
 import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -35,7 +33,6 @@ class DataStoreManager(private val context: Context) {
             preferences[USERNAME_KEY] = user.name
             preferences[EMAIL_KEY] = user.email
             preferences[PASSWORD_KEY] = user.password
-            preferences[IMAGE_KEY] = user.image!!
 
         }
     }

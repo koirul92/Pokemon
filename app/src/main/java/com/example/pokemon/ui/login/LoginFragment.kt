@@ -29,6 +29,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //userLogin()
+        viewModel
         binding.btnLogin.setOnClickListener {
             val username = binding.etUser.text.toString()
             val password = binding.etPassword.text.toString()
@@ -40,9 +41,8 @@ class LoginFragment : Fragment() {
                 password.isNullOrEmpty() -> {
                     binding.materialPassword.error = "Kolom password harus diisi"
                 }else ->{
-                viewModel.getUser(username)
                 viewModel.login(username,password)
-                viewModel.userSession.observe(viewLifecycleOwner){user->
+                viewModel.login.observe(viewLifecycleOwner){user->
                     if(user == null){
                         Toast.makeText(requireContext(),"Gagal Login",Toast.LENGTH_SHORT).show()
                     }else{

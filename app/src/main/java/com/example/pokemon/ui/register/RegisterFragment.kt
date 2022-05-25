@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentRegisterBinding
 import com.example.pokemon.local.User
+import com.example.pokemon.ui.login.LoginFragmentDirections
 import com.example.pokemon.ui.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -61,14 +62,21 @@ class RegisterFragment : Fragment() {
                     binding.etConfirmPassword.setText("")
                 }else-> {
                 viewModel.register(regist)
-                val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                findNavController().navigate(direct)
-            }
+                viewModel.register.observe(viewLifecycleOwner){
+                    if(it == null){
+                        Toast.makeText(requireContext(),"Gagal Register",Toast.LENGTH_SHORT).show()
+                    }else{
+                        val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                        findNavController().navigate(direct)
+                    }
+                }
+                }
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null}
+        _binding = null
+    }
 }

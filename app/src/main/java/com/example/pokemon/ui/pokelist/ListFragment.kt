@@ -55,10 +55,14 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getDataUser()
+        viewModel.userSession.observe(viewLifecycleOwner){
+            binding.tvWelcome.text = it.name
+        }
         binding.btnFav.setOnClickListener {
             it.findNavController().navigate(R.id.action_listFragment_to_favoriteFragment)
         }
+
         viewModel.getPokemonList()
         val progressDialog = ProgressDialog(requireActivity())
         viewModel.pokemonList.observe(viewLifecycleOwner){
@@ -86,14 +90,20 @@ class ListFragment : Fragment() {
             }
         }
 
-        viewModel.getDataUser()
-        viewModel.userSession.observe(viewLifecycleOwner){
-            binding.tvWelcome.text = it.name
+
+        binding.tvWelcome.setOnClickListener {
+            val direct = ListFragmentDirections.actionListFragmentToProfileFragment()
+            findNavController().navigate(direct)
         }
+
         binding.tvLogout.setOnClickListener {
             viewModel.deleteDataUser()
-            val direct = ListFragmentDirections.actionListFragmentToSplashFragment()
-            findNavController().navigate(direct)
+            viewModel.userSession.observe(viewLifecycleOwner){
+                if (it.id == -1 &&findNavController().currentDestination?.id==R.id.listFragment){
+                    val direct = ListFragmentDirections.actionListFragmentToSplashFragment()
+                    findNavController().navigate(direct)
+                }
+            }
         }
     }
 

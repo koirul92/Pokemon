@@ -14,10 +14,24 @@ class AuthViewModel @Inject constructor(private val repository: UserRepository):
     private val _userSession: MutableLiveData<User> = MutableLiveData()
     val userSession: LiveData<User> get() = _userSession
 
-    fun login(name: String,password:String){
+    private val _register: MutableLiveData<Long> = MutableLiveData()
+    val register: LiveData<Long> get() = _register
 
+
+    private val _update: MutableLiveData<Int> = MutableLiveData()
+    val update: LiveData<Int> get() = _update
+
+    private val _login: MutableLiveData<User> = MutableLiveData()
+    val login: LiveData<User> get() = _login
+
+
+
+
+
+    fun login(name: String,password:String){
         viewModelScope.launch {
-            repository.login(name,password)
+            _login.postValue(
+                repository.login(name,password))
         }
     }
     fun setDataUser(user: User){
@@ -25,21 +39,21 @@ class AuthViewModel @Inject constructor(private val repository: UserRepository):
             repository.setUser(user)
         }
     }
-    fun getUser(name: String){
+    /*fun getUser(name: String){
         viewModelScope.launch {
             val newUser = repository.getUserRoom(name)
             _userSession.postValue(newUser)
         }
-    }
+    }*/
     fun updateUser(user: User){
         viewModelScope.launch {
-            repository.updateUser(user)
+            _update.value=repository.updateUser(user)
         }
     }
 
     fun register(user: User) {
         viewModelScope.launch {
-            repository.register(user)
+            _register.value=repository.register(user)
         }
     }
 
