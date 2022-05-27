@@ -50,7 +50,8 @@ class UserRepositoryTest {
 
     @Test
     fun register():Unit= runBlocking {
-        val registerResponse = mockk<Long>()
+        val registerResponse = 1L
+        //val tesRegist = mockk<User>()
         val register = User(null,"zaa","zaa","zaa",null)
         every {
             runBlocking {
@@ -69,7 +70,7 @@ class UserRepositoryTest {
 
     @Test
     fun updateUser():Unit= runBlocking {
-        val updateResponse = mockk<Int>()
+        val updateResponse = 5
         val update = User(10,"zaa","zzz","zzz","")
         every {
             runBlocking {

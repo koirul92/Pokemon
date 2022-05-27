@@ -37,13 +37,22 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.register.observe(viewLifecycleOwner){
+            if(it == null){
+                Toast.makeText(requireContext(),"Gagal Register",Toast.LENGTH_SHORT).show()
+            }else{
+                val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                findNavController().navigate(direct)
+            }
+        }
+
         binding.btnRegister.setOnClickListener {
             val name = binding.etName.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            val regist = User(null,name,email,password,null)
+            val regist = User(null,name,email,password,"")
             when {
                 name.isNullOrEmpty() -> {
                     binding.materialName.error = "Kolom nama harus diisi"
@@ -62,14 +71,6 @@ class RegisterFragment : Fragment() {
                     binding.etConfirmPassword.setText("")
                 }else-> {
                 viewModel.register(regist)
-                viewModel.register.observe(viewLifecycleOwner){
-                    if(it == null){
-                        Toast.makeText(requireContext(),"Gagal Register",Toast.LENGTH_SHORT).show()
-                    }else{
-                        val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                        findNavController().navigate(direct)
-                    }
-                }
                 }
             }
         }

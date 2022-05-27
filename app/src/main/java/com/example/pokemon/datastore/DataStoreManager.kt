@@ -33,6 +33,7 @@ class DataStoreManager(private val context: Context) {
             preferences[USERNAME_KEY] = user.name
             preferences[EMAIL_KEY] = user.email
             preferences[PASSWORD_KEY] = user.password
+            preferences[IMAGE_KEY] = user.image
 
         }
     }

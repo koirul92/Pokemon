@@ -30,8 +30,7 @@ class AuthViewModel @Inject constructor(private val repository: UserRepository):
 
     fun login(name: String,password:String){
         viewModelScope.launch {
-            _login.postValue(
-                repository.login(name,password))
+            _login.value = repository.login(name, password)
         }
     }
     fun setDataUser(user: User){

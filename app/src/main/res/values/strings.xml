@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Pokemon</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Pokemon Pek</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
     <string name="welcome_user">Welcome User</string>

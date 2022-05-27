@@ -1,5 +1,6 @@
 package com.example.pokemon.ui.login
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.pokemon.databinding.FragmentLoginBinding
 import com.example.pokemon.ui.viewmodel.AuthViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,11 +32,23 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //userLogin()
-        viewModel
+        viewModel.login.observe(viewLifecycleOwner, Observer { user->
+            if(user != null){
+                viewModel.setDataUser(user)
+                Toast.makeText(requireContext(),"Login",Toast.LENGTH_SHORT).show()
+                val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
+                findNavController().navigate(direct)
+                //viewModel.login.removeObservers(viewLifecycleOwner)
+            }else{
+                val snackbar = Snackbar.make(requireContext(),binding.root,"Gagal Login",Snackbar.LENGTH_SHORT)
+                snackbar.setAction("OK"){snackbar.dismiss()}
+                snackbar.show()
+                //viewModel.login.removeObservers(viewLifecycleOwner)
+            }
+        })
         binding.btnLogin.setOnClickListener {
             val username = binding.etUser.text.toString()
             val password = binding.etPassword.text.toString()
-
             when {
                 username.isNullOrEmpty() -> {
                     binding.materialEmail.error = "Kolom nama harus diisi"
@@ -42,20 +57,8 @@ class LoginFragment : Fragment() {
                     binding.materialPassword.error = "Kolom password harus diisi"
                 }else ->{
                 viewModel.login(username,password)
-                viewModel.login.observe(viewLifecycleOwner){user->
-                    if(user == null){
-                        Toast.makeText(requireContext(),"Gagal Login",Toast.LENGTH_SHORT).show()
-                    }else{
-                        viewModel.setDataUser(user)
-                        val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
-                        findNavController().navigate(direct)
-                        }
-                    }
-
-                }
-
             }
-
+            }
         }
         binding.btnRegister.setOnClickListener {
             val direct = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
