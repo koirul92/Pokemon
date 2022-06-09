@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -23,7 +24,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.pokemon.MainActivity
 import com.example.pokemon.R
+import com.example.pokemon.SplashCompose
 import com.example.pokemon.databinding.CustomDialogBinding
 import com.example.pokemon.databinding.FragmentListBinding
 import com.example.pokemon.datastore.DataStoreManager
@@ -100,8 +103,8 @@ class ListFragment : Fragment() {
             viewModel.deleteDataUser()
             viewModel.userSession.observe(viewLifecycleOwner){
                 if (it.id == -1 &&findNavController().currentDestination?.id==R.id.listFragment){
-                    val direct = ListFragmentDirections.actionListFragmentToSplashFragment()
-                    findNavController().navigate(direct)
+                    val intent = Intent (activity, SplashCompose::class.java)
+                    activity?.startActivity(intent)
                 }
             }
         }

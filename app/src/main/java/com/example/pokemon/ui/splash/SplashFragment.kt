@@ -32,11 +32,11 @@ class SplashFragment : Fragment() {
             viewModel.getUserFromPref()
             viewModel.apply {
                 userSession.observe(viewLifecycleOwner){
-                    if (it.id != DataStoreManager.DEFAULT_ID){
+                    /*if (it.id != DataStoreManager.DEFAULT_ID){
                         findNavController().navigate(R.id.action_splashFragment_to_listFragment)
                     }else{
                         findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
-                    }
+                    }*/
                 }
             }
         },1000)

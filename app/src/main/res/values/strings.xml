@@ -26,4 +26,7 @@
     <string name="att">ATT :</string>
     <string name="update">Update</string>
     <string name="favorite">Favorite</string>
+    <string name="title_activity_splash_compose">SplashCompose</string>
+    <string name="title_activity_login_compose">LoginCompose</string>
+    <string name="title_activity_register_compose">RegisterCompose</string>
 </resources>
