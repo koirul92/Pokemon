@@ -2,6 +2,7 @@ package com.example.pokemon.ui.profile
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,13 +15,36 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.pokemon.R
-import com.example.pokemon.databinding.FragmentProfileBinding
 import com.example.pokemon.local.User
-import com.example.pokemon.ui.register.RegisterFragmentDirections
+import com.example.pokemon.ui.theme.PokemonTheme
+import com.example.pokemon.ui.theme.Roboto
+import com.example.pokemon.ui.theme.pokemom2
 import com.example.pokemon.ui.viewmodel.AuthViewModel
 import com.example.pokemon.ui.viewmodel.ListViewModel
 import com.example.pokemon.utils.PermissionUtils
@@ -30,8 +54,8 @@ import java.util.*
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+ /*   private var _binding: FragmentProfileBinding? = null
+    private val binding get() = _binding!!*/
     private val viewModel: AuthViewModel by viewModels()
     private var imageUri: Uri? = null
     //    private var imageUriToUpdate: Uri? = null
@@ -41,12 +65,255 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentProfileBinding.inflate(inflater,container,false)
+   /*     _binding = FragmentProfileBinding.inflate(inflater,container,false)
         // Inflate the layout for this fragment
-        return binding.root
+        return binding.root*/
+        return ComposeView(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            setContent {
+                PokemonTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colors.background
+                    ) {
+                        Column {
+                            Header()
+                            Update()
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    @Composable
+    fun Header() {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(64.dp))
+            Text(
+                text = "Profile",
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 32.sp,
+                    fontFamily = Roboto,
+                    fontWeight = FontWeight.Medium
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Image(
+                painter = painterResource(id = R.drawable.ic_baseline_supervised_user_circle_24),
+                contentDescription = "image app",
+                modifier = Modifier.size(128.dp)
+            )
+        }
+    }
+
+    @Composable
+    fun Update() {
+        viewModel.getUserFromPref()
+        var username by remember { mutableStateOf("${viewModel.userSession.value?.name}") }
+        var email by remember { mutableStateOf("${viewModel.userSession.value?.email}") }
+        var password by remember { mutableStateOf("") }
+        var confirmPassword by remember { mutableStateOf("") }
+        var passwordVisibility by remember { mutableStateOf(false) }
+        var confirmPasswordVisibility by remember { mutableStateOf(false) }
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp)
+        )
+        Spacer(
+            modifier = Modifier
+                .height(32.dp)
+                .fillMaxWidth()
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                placeholder = { Text(text = "Username") },
+                shape = RoundedCornerShape(16.dp),
+                maxLines = 1,
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontFamily = Roboto,
+                    fontWeight = FontWeight.Normal
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                placeholder = { Text(text = "Email") },
+                shape = RoundedCornerShape(16.dp),
+                maxLines = 1,
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontFamily = Roboto,
+                    fontWeight = FontWeight.Normal
+                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth()
+            )
+
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                placeholder = { Text(text = "Password") },
+                shape = RoundedCornerShape(16.dp),
+                maxLines = 1,
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontFamily = Roboto,
+                    fontWeight = FontWeight.Normal
+                ),
+                visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = {
+                        passwordVisibility = !passwordVisibility
+                    }) {
+                        Icon(
+                            imageVector = if (passwordVisibility)
+                                Icons.Filled.Visibility
+                            else
+                                Icons.Filled.VisibilityOff, ""
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = { confirmPassword = it },
+                placeholder = { Text(text = "Confirm Password") },
+                shape = RoundedCornerShape(16.dp),
+                maxLines = 1,
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontFamily = Roboto,
+                    fontWeight = FontWeight.Normal
+                ),
+                visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = {
+                        confirmPasswordVisibility = !confirmPasswordVisibility
+                    }) {
+                        Icon(
+                            imageVector = if (confirmPasswordVisibility)
+                                Icons.Filled.Visibility
+                            else
+                                Icons.Filled.VisibilityOff, ""
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth()
+            )
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(32.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = {
+                        if (username == "" || email == "" || password == "" || confirmPassword == "") {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("")
+                                .setMessage("Semua kolom harus diisi")
+                                .setPositiveButton("Ok") { dialog, _ ->
+                                    dialog.dismiss()
+                                }
+                                .show()
+                        } else if (password != confirmPassword) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Password konfirmasi tidak sama",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            confirmPassword = ""
+                        } else {
+                            val user = User(viewModel.userSession.value?.id, username, email, password,"")
+                            viewModel.updateUser(user)
+                            viewModel.setDataUser(user)
+                            viewModel.update.observe(viewLifecycleOwner){int->
+                                if(int == null){
+                                    Toast.makeText(requireContext(),"Gagal Update", Toast.LENGTH_SHORT).show()
+                                }else{
+                                    val direct = ProfileFragmentDirections.actionProfileFragmentToListFragment()
+                                    findNavController().navigate(direct)
+                                }
+                            }
+
+                        }
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = pokemom2),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Update",
+                        style = TextStyle(
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            fontFamily = Roboto,
+                            fontWeight = FontWeight.Normal,
+                        ),
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+
+            }
+        }
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        PokemonTheme {
+            Column {
+                Header()
+                Update()
+            }
+        }
+    }
+
+    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.ivUser.setOnClickListener {
@@ -163,5 +430,5 @@ class ProfileFragment : Fragment() {
                 Manifest.permission.CAMERA
             )
         }
-    }
+    }*/
 }

@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.pokemon.R
 import com.example.pokemon.databinding.FragmentRegisterBinding
 import com.example.pokemon.local.User
-import com.example.pokemon.ui.login.LoginFragmentDirections
 import com.example.pokemon.ui.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -41,8 +40,8 @@ class RegisterFragment : Fragment() {
             if(it == null){
                 Toast.makeText(requireContext(),"Gagal Register",Toast.LENGTH_SHORT).show()
             }else{
-                val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
-                findNavController().navigate(direct)
+                /*val direct = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                findNavController().navigate(direct)*/
             }
         }
 

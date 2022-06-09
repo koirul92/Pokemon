@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.fragment.app.viewModels
 import com.airbnb.lottie.compose.*
 import com.example.pokemon.datastore.DataStoreManager
@@ -56,7 +57,6 @@ class SplashCompose : ComponentActivity() {
                     finish()
                 }
                 }
-
         }
         Box(
             contentAlignment = Alignment.Center,
@@ -89,8 +89,10 @@ class SplashCompose : ComponentActivity() {
     @Composable
     fun DefaultPreview() {
         PokemonTheme {
-            Column {
-                SplashScreen()
+            Surface(color = MaterialTheme.colors.background) {
+                Column {
+                    SplashScreen()
+                }
             }
         }
     }

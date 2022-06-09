@@ -36,9 +36,9 @@ class LoginFragment : Fragment() {
             if(user != null){
                 viewModel.setDataUser(user)
                 Toast.makeText(requireContext(),"Login",Toast.LENGTH_SHORT).show()
-                val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
+                /*val direct = LoginFragmentDirections.actionLoginFragmentToListFragment()
                 findNavController().navigate(direct)
-                //viewModel.login.removeObservers(viewLifecycleOwner)
+                *///viewModel.login.removeObservers(viewLifecycleOwner)
             }else{
                 val snackbar = Snackbar.make(requireContext(),binding.root,"Gagal Login",Snackbar.LENGTH_SHORT)
                 snackbar.setAction("OK"){snackbar.dismiss()}
@@ -61,8 +61,8 @@ class LoginFragment : Fragment() {
             }
         }
         binding.btnRegister.setOnClickListener {
-            val direct = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-            findNavController().navigate(direct)
+            /*val direct = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+            findNavController().navigate(direct)*/
         }
     }
 

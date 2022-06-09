@@ -27,12 +27,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
-import com.example.pokemon.ui.theme.PokemonTheme
-import com.example.pokemon.ui.theme.Roboto
-import com.example.pokemon.ui.theme.RobotoCondensed
-import com.example.pokemon.ui.theme.pokemom
+import com.example.pokemon.ui.theme.*
 import com.example.pokemon.ui.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.internal.http2.Header
@@ -195,7 +193,7 @@ class LoginCompose : ComponentActivity() {
                     }
                 },
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(backgroundColor = pokemom),
+                colors = ButtonDefaults.buttonColors(backgroundColor = pokemom2),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
